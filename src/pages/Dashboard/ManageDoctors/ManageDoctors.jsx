@@ -26,7 +26,7 @@ import { useState } from "react";
 const ManageDoctors = () => {
   const [date, setDate] = useState(new Date());
   return (
-    <div className="">
+    <div className="mt-6">
       <h1 className="max-w-[250px] w-full p-4">
         <DashboardTitle />
       </h1>

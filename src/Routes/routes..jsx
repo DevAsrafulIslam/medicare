@@ -12,6 +12,7 @@ import AllUsers from "@/pages/Dashboard/AllUsers/AllUsers";
 import AddDoctor from "@/pages/Dashboard/AddDoctor/AddDoctor";
 import ManageDoctors from "@/pages/Dashboard/ManageDoctors/ManageDoctors";
 import SignIn from "@/pages/SignIn/SignIn";
+import Contact from "@/pages/Contact/Contact";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
       {
         path: "/appointment",
         element: <Appointment />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
       },
       {
         path: "/login",

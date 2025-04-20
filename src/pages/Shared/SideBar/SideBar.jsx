@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   FaChartBar,
@@ -5,42 +7,73 @@ import {
   FaUserDoctor,
   FaUserGear,
   FaUsersLine,
+  FaAngleRight,
 } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const SideBar = () => {
+  const location = useLocation();
+  const [expanded, setExpanded] = useState(true);
+
+  const isActive = (path) => location.pathname === path;
+
+  const menuItems = [
+    { path: "/dashboard", icon: <FaChartBar />, label: "Dashboard" },
+    { path: "/allusers", icon: <FaUsersLine />, label: "All Users" },
+    { path: "/addDoctor", icon: <FaUserDoctor />, label: "Add a Doctor" },
+    { path: "/manageDoctor", icon: <FaUserGear />, label: "Manage Doctors" },
+    { path: "/", icon: <FaHouse />, label: "Home" },
+  ];
+
   return (
-    <div className="space-y-4 max-w-[250px] bg-slate-100 md:w-full py-4">
-      <Link to="/dashboard">
-        <Button className="flex justify-start w-full gap-4 text-3xl md:text-xl text-red-500 hover:bg-gray-200 text-left font-normal">
-          <FaChartBar />
-          <h3 className="hidden md:flex">Dashboard</h3>
+    <div className="relative h-screen">
+      <div 
+        className={cn(
+          "h-full transition-all duration-300 bg-white border-r border-gray-200 shadow-sm py-6 flex flex-col",
+          expanded ? "w-[250px]" : "w-[80px]"
+        )}
+      >
+        <Button 
+          variant="ghost" 
+          size="icon"
+          className="absolute -right-3 top-6 h-6 w-6 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-100"
+          onClick={() => setExpanded(!expanded)}
+        >
+          <FaAngleRight className={cn("h-3 w-3 transition-transform", !expanded && "rotate-180")} />
         </Button>
-      </Link>
-      <Link to="/allusers">
-        <Button className="flex justify-start w-full gap-4 text-3xl md:text-xl hover:bg-gray-200 text-left font-normal">
-          <FaUsersLine />
-          <h3 className="hidden md:flex">All Users</h3>
-        </Button>
-      </Link>
-      <Link to="/addDoctor">
-        <Button className="flex justify-start w-full gap-4 text-3xl md:text-xl hover:bg-gray-200 text-left font-normal">
-          <FaUserDoctor />
-          <h3 className="hidden md:flex">Add a Doctor</h3>
-        </Button>
-      </Link>
-      <Link to="/manageDoctor">
-        <Button className="flex gap-4 justify-start text-3xl md:text-xl hover:bg-gray-200 text-left font-normal">
-          <FaUserGear />
-          <h3 className="hidden md:flex">Manage Doctors</h3>
-        </Button>
-      </Link>
-      <Link to="/">
-        <Button className="flex w-full justify-start gap-4 text-3xl md:text-xl hover:bg-gray-200 text-left font-normal">
-          <FaHouse />
-          <h3 className="hidden md:flex">Home</h3>
-        </Button>
-      </Link>
+        
+        <div className="space-y-1 px-3 mt-4">
+          {menuItems.map((item) => (
+            <Link to={item.path} key={item.path}>
+              <Button
+                variant="ghost"
+                className={cn(
+                  "w-full justify-start gap-3 py-3 px-3 text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors",
+                  isActive(item.path) && "bg-blue-50 text-blue-600 font-medium"
+                )}
+              >
+                <span className="text-xl">{item.icon}</span>
+                {expanded && <span>{item.label}</span>}
+              </Button>
+            </Link>
+          ))}
+        </div>
+        
+        <div className="mt-auto px-3">
+          {expanded && (
+            <div className="bg-blue-50 rounded-lg p-4 text-center">
+              <p className="text-sm text-blue-600 font-medium">Need help?</p>
+              <p className="text-xs text-gray-500 mt-1">Contact support team</p>
+              <Button 
+                variant="outline" 
+                className="mt-2 w-full text-xs h-8 border-blue-200 text-blue-600 hover:bg-blue-100"
+              >
+                Contact Support
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
